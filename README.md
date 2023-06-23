@@ -11,7 +11,7 @@ This script allows you to easily block traffic from/to countries via ipset and i
 * inserting a jump to this COUNTRYBLOCK chain into INPUT, FORWARD and OUTPUT chains
 
 TODO:
-~It can be controlled via a systemd unit file - supporting `start`, `stop`, `reload` functionality, where reload will refresh prefixes. Or it can be used standalone, where it also supports `pause`, `unpause`. This keeps sets in COUNTRYBLOCK, but remove/reinstate the jump to this chain from built-in chains.~~
+~~It can be controlled via a systemd unit file - supporting `start`, `stop`, `reload` functionality, where reload will refresh prefixes. Or it can be used standalone, where it also supports `pause`, `unpause`. This keeps sets in COUNTRYBLOCK, but remove/reinstate the jump to this chain from built-in chains.~~
 
 ## Installation
 If you aren't installing from a package, make sure you have `ipset`, `iptables`, `curl` and `bash` installed. There are no other dependencies. Place the script into `/usr/local/bin/` and its `country_codes.txt` file alongside it.
