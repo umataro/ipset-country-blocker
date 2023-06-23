@@ -1,21 +1,20 @@
 # ipset-country-blocker
-BLOCK traffic to/from/through your server from/to entire countries easily
-# ubi-ipset-country
 
-BLOCK traffic to/from/through your server from/to entire countries easily with this script. All you need is iptables, ipset and bash.
+BLOCK traffic to/from/through your server from/to entire countries easily with this script. All you need is iptables, ipset, curl and bash.
 
 ## Description
 This script allows you to easily block traffic from/to countries via ipset and iptables. It does this by:
 
 * downloading country prefixes
-* creating an ip set for each country specified (in a file `country_codes.txt`)
-* creating a COUNTRYBLOCK chain that drops packets defined in those ipsets
+* creating an ip set for each country specified in `country_codes.txt` file
+* creating a COUNTRYBLOCK chain that drops packets from prefixes defined in those ipsets
 * inserting a jump to this COUNTRYBLOCK chain into INPUT, FORWARD and OUTPUT chains
 
-It can be controlled via a systemd unit file - supporting `start`, `stop`, `reload` functionality, where reload will refresh prefixes. Or it can be used standalone, where it also supports `pause`, `unpause`. This keeps sets in COUNTRYBLOCK, but remove/reinstate the jump to this chain from built-in chains. 
+TODO:
+~It can be controlled via a systemd unit file - supporting `start`, `stop`, `reload` functionality, where reload will refresh prefixes. Or it can be used standalone, where it also supports `pause`, `unpause`. This keeps sets in COUNTRYBLOCK, but remove/reinstate the jump to this chain from built-in chains.~~
 
 ## Installation
-If you aren't installing from a package, make sure you have `ipset`, `iptables`, `curl` and `bash` installed. There are no other dependencies. Place the script into `/usr/local/bin/` and its `country_codes.txt` file alongside it. 
+If you aren't installing from a package, make sure you have `ipset`, `iptables`, `curl` and `bash` installed. There are no other dependencies. Place the script into `/usr/local/bin/` and its `country_codes.txt` file alongside it.
 
 ## Configuration
 Visit https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements to get the 2 character ISO country codes for the countries you want to block. Put those into country_codes.txt - 1 country per line. **No empty lines**, **no comments**, **no upper case characters** are allowed. Do not press Enter after the last entry in the file (which creates a new empty line). For example, to block China, Russia and Ukraine, the file would contain the following 3 lines:
@@ -28,30 +27,26 @@ ua
 ## Usage
 
 ### In standalone mode
-* `./ubi-ipset-country -a` - (add) - sets up country blocking
-* `./ubi-ipset-country -d` - (delete) - stops country blocking (removes all chains, rules and sets related to this)
-* `./ubi-ipset-country -r` - (refresh) - refreshes lists of prefixes that ipset uses for country blocking (without stopping/starting)
-* `./ubi-ipset-country -p` - (pause) - temporarily pauses country blocking (doesn't do full teardown of sets, rules, chain - only removes jumps to COUNTRYBLOCK chain)
-* `./ubi-ipset-country -u` - (unpause) - resumes paused country blocking (restores jumps to COUNTRYBLOCK chain)
-* `./ubi-ipset-country -h` - (help) - displays a helpful message with expected syntax
+* `./ipset-country-blocker -a` - (add) - sets up country blocking
+* `./ipset-country-blocker -d` - (delete) - stops country blocking (removes all chains, rules and sets related to this)
+* `./ipset-country-blocker -r` - (refresh) - refreshes lists of prefixes that ipset uses for country blocking (without stopping/starting)
+* `./ipset-country-blocker -p` - (pause) - temporarily pauses country blocking (doesn't do full teardown of sets, rules, chain - only removes jumps to COUNTRYBLOCK chain)
+* `./ipset-country-blocker -u` - (unpause) - resumes paused country blocking (restores jumps to COUNTRYBLOCK chain)
+* `./ipset-country-blocker -h` - (help) - displays a helpful message with expected syntax
 
-### In systemd mode
-* `systemctl start ubi-ipset-country` - sets up country blocking
-* `systemctl stop ubi-ipset-country` - stops country blocking (removes all chains, rules and sets related to this)
-* `systemctl reload ubi-ipset-country` - refreshes lists of prefixes that ipset uses for country blocking (without stopping/starting)
+### ~~In systemd mode~~ TODO
+* ~~`systemctl start ipset-country-blocker` - sets up country blocking~~
+* ~~`systemctl stop ipset-country-blocker` - stops country blocking (removes all chains, rules and sets related to this)~~
+* ~~`systemctl reload ipset-country-blocker` - refreshes lists of prefixes that ipset uses for country blocking (without stopping/starting)~~
 
 ## Support
-Read the code. It is actually really easy to understand. Should that not suffice, contact mkovac@ubimet.com or fschmid@ubimet.com. 
-
-## Roadmap
-* **whitelist functionality** - for logical reasons, this can't be a simple "allow x,y,z's prefixes" followed by "block all". Instead, it's a list of all countries to block, with the exclusion of countries you specify in a whitelist file. 
-* **debian package**
+Read the code. It is actually really easy to understand.
 
 ## Contributing
 If you have functionality to add, it is very unlikely it'll be added as this is a small single purpose project. Just fork the project under the terms of GPLv3 or later license and make it your own.
 
 ## Authors and acknowledgment
-Written by Michal Kovac - mkovac@ubimet.com in 2022
+Written by umataro@live.com in 2022
 
 ## License
 GPLv3 or later
